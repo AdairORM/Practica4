@@ -1,5 +1,7 @@
 package com.mexiti.connectarduino_2025_i.ui.views
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,33 +16,39 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mexiti.connectarduino_2025_i.dataExchangeInstance
+import com.mexiti.connectarduino_2025_i.R
+import com.mexiti.connectarduino_2025_i.ui.theme.ConnectArduino2025ITheme
 
 @Composable
 fun BluetoothUI(connectStatus: MutableState<String>, modifier: Modifier = Modifier){
-    var checked by remember {
-        mutableStateOf(false)
-    }
-    val sensor = remember {
-        mutableStateOf("Sin mensaje")
-    }
-    var switchControl by remember {
-        mutableStateOf("LED OFF")
-    }
+
 
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
+        Spacer(modifier = Modifier.height(10.dp))
+        Row (
+             modifier = Modifier.height(128.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.bluetooth),
+                contentDescription ="Bluetooth")
+            Image(painter = painterResource(id = R.drawable.arduino),
+                contentDescription ="Arduino" )
+
+        }
+        Spacer(modifier = Modifier.height(200.dp))
+
         Text(
             text = connectStatus.value,
             modifier = Modifier
@@ -54,18 +62,10 @@ fun BluetoothUI(connectStatus: MutableState<String>, modifier: Modifier = Modifi
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = switchControl)
-            Switch(checked = checked,
+            Text(text = "switchControl")
+            Switch(checked = true,
                 onCheckedChange ={
-                    if(!checked){
-                        switchControl = "LED ON"
-                        dataExchangeInstance?.write("A".toByteArray())
-                        checked = true
-                    }else{
-                        switchControl = "LED OFF"
-                        dataExchangeInstance?.write("B".toByteArray())
-                        checked = false
-                    }
+
                 } )
 
         }
@@ -75,19 +75,14 @@ fun BluetoothUI(connectStatus: MutableState<String>, modifier: Modifier = Modifi
             modifier = Modifier.fillMaxWidth()
         ) {
             Button(onClick = {
-                val str = dataExchangeInstance?.read()
-                if( str != null){
-                    sensor.value = " ${str} [°C] "
-                }else{
-                    connectStatus.value = "Sin mensaje"
-                }
+
             },
                 modifier = Modifier.padding(start = 48.dp)
                 ) {
                 Text(text = " READ ")
             }
             Text(
-                text = sensor.value,
+                text = "25 [°C]",
                 modifier = Modifier
                     .padding(start = 96.dp)
                     .background(Color(0x80E2EBEA))
@@ -98,5 +93,16 @@ fun BluetoothUI(connectStatus: MutableState<String>, modifier: Modifier = Modifi
         }
 
 
+    }
+}
+
+@SuppressLint("UnrememberedMutableState")
+@Preview(showBackground = true)
+@Composable
+fun BluetoothUIpreview(){
+    ConnectArduino2025ITheme {
+       val connection = mutableStateOf("Connection correct")
+
+            BluetoothUI(connectStatus = connection)
     }
 }
