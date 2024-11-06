@@ -66,4 +66,18 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(platform("androidx.compose:compose-bom:2024.01"))
+
+    // Material 3 para Compose
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3-window-size-class") // Opcional
+
+    // Otras dependencias de Compose
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(platform("androidx.compose:compose-bom:2024.01"))  // Versión más reciente para BOM
+    implementation("androidx.compose.material3:material3:1.1.0") // Última versión de material3
+    implementation("androidx.compose.material:material-icons-core:1.5.0")
+    implementation("androidx.compose.material:material-icons-extended:1.5.0")
 }
